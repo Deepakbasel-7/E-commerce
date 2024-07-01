@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class Customer(db.Model, UserMixin ):
     id= db.Column(db.Integer, primary_key= True)
     email= db.Column(db.String(100), unique= True)
-    username= db.column(db.String(100))
+    username= db.Column(db.String(100))
     password_hash= db.Column(db.String(150))
     date_joined= db.Column(db.DateTime(), default= datetime.utcnow)
     
@@ -36,23 +36,23 @@ class Customer(db.Model, UserMixin ):
 class Product(db.Model):
     id= db.Column(db.Integer, primary_key= True)
     product_name= db.Column(db.String(100), nullable= False)
-    current_price= db.Column(db.FLoat, nullable= False)
-    previous_price= db.Column(db.FLoat, nullable= False)
+    current_price= db.Column(db.Float, nullable= False)
+    previous_price= db.Column(db.Float, nullable= False)
     in_stock= db.Column(db.Integer, nullable= False)
     product_picture= db.Column(db.String(1000), nullable= False)
-    flash_sale= db.column(db.Boolean, default= False)
+    flash_sale= db.Column(db.Boolean, default= False)
     date_added= db.Column(db.DateTime, default= datetime.utcnow)
     
-    carts= db.relationship('Cart', backref= db.backref('product'. lazy= True))
+    carts= db.relationship('Cart', backref= db.backref('product', lazy= True))
     orders= db.relationship('Order', backref= db.backref('product', lazy= True))
     
     
-    def__str__(self):
-        return '<Product %r>' % self.product_name
+    def __str__(self):
+     return '<Product %r>' % self.product_name
     
 class Cart(db.Model):
     id= db.Column(db.Integer, primary_key= True)
-    quantity= db.COlumn(db.Integer, nullable= False)
+    quantity= db.Column(db.Integer, nullable= False)
     
     
     customer_link= db.Column(db.Integer, db.ForeignKey('customer.id'), nullable= False)
