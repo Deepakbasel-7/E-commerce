@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, flash, send_from_directory, redirect
 from flask_login import login_required, current_user
-from .forms import ShopItemsForm
+from .forms import ShopItemsForm, OrderForm
 from werkzeug.utils import secure_filename
-from .models import Product
+from .models import Product, Order
 from . import db
 
 
@@ -136,3 +136,24 @@ def delete_item(item_id):
             flash('Item not deleted!!')
         return redirect('/shop-items')
     return render_template('404.html') 
+
+
+@admin.route('/view-orders')
+@login_required
+def order_view():
+    if current_user.id == 3:
+        orders = Order.query.all()
+        return render_template('view_orders.html', orders=orders)
+    return render_template('404.html')
+
+
+
+@admin.route('/update-order/<int:order_id>', methods=['GET', 'POST'])
+@login_required
+def update_order(order_id):
+    if current_user.id == 3:
+        form = OrderForm()
+
+        return render_template('order_update.html', form=form)
+
+    return render_template('404.html')
